@@ -27,45 +27,40 @@ const columns = useMemo(
             accessorKey: 'id',
             header: 'id',
             size: 30,
-            groupable: true,
         },
         {
             accessorKey: 'name',
             header: 'Name',
             size: 150,
-            groupable: true,
         },
         {
             accessorKey: 'category',
             header: 'Category',
             size: 120,
-            groupable: true, // Enable grouping by category
+            groupable: true,
         },
         {
             accessorKey: 'subcategory',
             header: 'Subcategory',
             size: 120,
-            groupable: true, // Enable grouping by subcategory
+            groupable: true, 
         },
         {   
             accessorKey: 'createdAt',
             accessorFn: (row) => moment(row.createdAt).format('DD-MMM-YYYY'),
             header: 'CreatedAt',
             size: 200,
-            groupable: true,
         },
         {   
             accessorKey: 'updatedAt',
             accessorFn: (row) => moment(row.updatedAt).format('DD-MMM-YYYY'),
             header: 'UpdatedAt',
             size: 200,
-            groupable: true,
         },
         {
             accessorKey: 'price',
             header: 'Price',
             size: 100,
-            groupable: true,
         },
         {
             accessorKey: 'sale_price',
@@ -89,26 +84,22 @@ const [columnVisibility, setColumnVisibility] = useState({
     sale_price: true,
   });
 
-
-  useEffect(() => {
-    console.log(grpitems);
-    }, [grpitems]);
-    
-
-
+  const [sorting, setSorting] = useState([]);
 
 const table = useMaterialReactTable({
     columns,
     data,
-    state: { columnVisibility, grouping: grpitems},
+    state: { columnVisibility, grouping: grpitems , sorting},
     onColumnVisibilityChange: setColumnVisibility,
     onGroupingChange: setgrpitems,
+    onSortingChange: setSorting,
     enableGrouping: true,
+    enableSorting: true,
+    enableMultiSort: true,
     groupedColumnMode: 'reorder',
     enableColumnDragging: false,
     initialState: { 
         showGlobalFilter: true,
-        grouping: [],
     },
     muiPaginationProps: {
         showRowsPerPage: false,
@@ -132,12 +123,14 @@ const handleClick = (val) => {
 
 return (
     <div className="table">
-            {open && <SidePanel open={open} 
+            {open && <SidePanel open={open}
+            table={table} 
             setOpen={setOpen} 
             curntState={curntState} 
             setgrpitems = {setgrpitems}
             setColumnVisibility = {setColumnVisibility}
             columnVisibility = {columnVisibility}
+            setSorting = {setSorting}
             />} 
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '3px', justifyContent: 'flex-end', background:'white', padding:'5px'}}>
@@ -152,7 +145,6 @@ return (
                 <IconButton onClick={() => handleClick("filter")}>
                     <FilterListIcon/>
                 </IconButton>
-                <MRT_ToggleFiltersButton table={table}/>
                 <IconButton onClick={() => handleClick("Group")}>
                     <LayersIcon/>
                 </IconButton>

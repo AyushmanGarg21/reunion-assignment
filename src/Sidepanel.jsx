@@ -3,10 +3,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Drawer, IconButton,Box} from '@mui/material';
 import Group from './components/GroupItems';
 import HideItems from './components/Hideitems';
+import SortItems from './components/SortItems';
+import Filter_Items from './components/FilterItems';
 
 
 
-const SidePanel = ({open , setOpen , curntState , setgrpitems ,setColumnVisibility ,columnVisibility}) => {
+const SidePanel = ({table, open , setOpen , curntState , setgrpitems ,setColumnVisibility ,columnVisibility , setSorting}) => {
 
     return (
         <div>
@@ -42,7 +44,7 @@ const SidePanel = ({open , setOpen , curntState , setgrpitems ,setColumnVisibili
                         <CloseIcon/>
                     </IconButton>
                 </Box>
-                    
+                    <SortItems setSorting = {setSorting} table = {table}/>
                 </Box>
                 }
 
@@ -54,7 +56,7 @@ const SidePanel = ({open , setOpen , curntState , setgrpitems ,setColumnVisibili
                         <CloseIcon/>
                     </IconButton>
                 </Box>
-                    
+                    <Filter_Items setOpen = {setOpen}/>
                 </Box>
                 }
 
