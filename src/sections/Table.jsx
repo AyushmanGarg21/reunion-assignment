@@ -18,6 +18,8 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import SidePanel from '../Sidepanel';
 
 const data = sampledata;
+const categorylist = ['Activity','Automotive','Health', 'Electronics', 'Clothing', 'Home', 'Sports', 'Entertainment', 'Pets', 'Beauty'];
+const subcategorylist = [];
 
 const Table = () => {
    
@@ -31,17 +33,22 @@ const columns = useMemo(
         {
             accessorKey: 'name',
             header: 'Name',
+            filterVariant: 'text',
             size: 150,
         },
         {
             accessorKey: 'category',
             header: 'Category',
+            filterVariant: 'multi-select',
+            filterSelectOptions: categorylist,
             size: 120,
             groupable: true,
         },
         {
             accessorKey: 'subcategory',
             header: 'Subcategory',
+            filterVariant: 'multi-select',
+            filterSelectOptions: subcategorylist, 
             size: 120,
             groupable: true, 
         },
@@ -49,23 +56,54 @@ const columns = useMemo(
             accessorKey: 'createdAt',
             accessorFn: (row) => moment(row.createdAt).format('DD-MMM-YYYY'),
             header: 'CreatedAt',
+            //filterVariant: 'date-range',
+            //Cell: ({ cell }) => moment(cell.getValue()).format('DD-MMM-YYYY'),
             size: 200,
         },
         {   
             accessorKey: 'updatedAt',
             accessorFn: (row) => moment(row.updatedAt).format('DD-MMM-YYYY'),
             header: 'UpdatedAt',
+            //filterVariant: 'date-range',
+            //Cell: ({ cell }) => moment( cell.getValue()).format('DD-MMM-YYYY'),
             size: 200,
         },
         {
             accessorKey: 'price',
             header: 'Price',
             size: 100,
+            filterVariant: 'range-slider',
+            filterFn: 'betweenInclusive',
+            muiFilterSliderProps: {
+                marks: true,
+                max: 200, 
+                min: 30, 
+                step: 10,
+                valueLabelFormat: (value) =>
+                  value.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                  }),
+            },
         },
         {
             accessorKey: 'sale_price',
+            accessorFn: (row) => row.sale_price ? row.sale_price : row.price,
             header: 'Sale price',
             size: 100,
+            filterVariant: 'range-slider',
+            filterFn: 'betweenInclusive',
+            muiFilterSliderProps: {
+                marks: true,
+                max: 200, 
+                min: 30,
+                step: 10,
+                valueLabelFormat: (value) =>
+                  value.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                  }),
+              },
         }
     ],
     [],
@@ -145,6 +183,7 @@ return (
                 <IconButton onClick={() => handleClick("filter")}>
                     <FilterListIcon/>
                 </IconButton>
+                <MRT_ToggleFiltersButton table={table} />
                 <IconButton onClick={() => handleClick("Group")}>
                     <LayersIcon/>
                 </IconButton>
