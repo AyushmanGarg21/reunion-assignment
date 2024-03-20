@@ -1,5 +1,5 @@
-import Header from "./Header"
-import Table from "./Table"
+import Header from "./sections/Header"
+import Table from "./sections/Table"
 
 function App() {
 
